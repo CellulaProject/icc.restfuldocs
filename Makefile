@@ -21,7 +21,7 @@ install: env
 	$(PYTHON) setup.py install
 	
 edit:	
-	cd src && emacs app.py
+	cd src/icc && emacs app.py
 
 doc-storage-dev:
 	make -C ../icc.contentstorage dev

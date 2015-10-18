@@ -8,9 +8,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'Flask',
-        'Flask-HTTPAuth',
-        'Flask-RESTful',
+        'flask',
+        'flask-httpauth',
+        'flask-restful',
     ]
 )
 quit()

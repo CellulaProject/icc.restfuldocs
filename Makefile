@@ -1,15 +1,13 @@
-.PHONY: env all dev install
+.PHONY: env dev install
 
 LPYTHON=python3
 PYTHON=$(LPYTHON)/bin/$(LPYTHON)
 
-all:
-
 env:
-	virtualenv  $(LPYTHON)
+	[ -d $(LPYTHON) ] || virtualenv  $(LPYTHON)
 
 dev:	env
 	$(PYTHON) setup.py develop
 
-dev:	install
+install: env
 	$(PYTHON) setup.py install

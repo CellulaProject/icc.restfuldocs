@@ -23,7 +23,7 @@ def get_password(username):
 def unauthorized():
     # return 403 instead of 401 to prevent browsers from displaying the default
     # auth dialog
-    return make_response(jsonify({'message': 'Unauthorized access'}), 403)
+    return make_response(jsonify({'message': 'Unauthorized access'}), 401)
 
 tasks = [
     {

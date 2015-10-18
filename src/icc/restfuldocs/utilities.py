@@ -1,4 +1,4 @@
-from icc.storage.kcstorage.components import *
+from icc.contentstorage.kyotocabinet.components import *
 from icc.restfuldocs.interfaces import IApplication
 from zope.component import getUtility
 

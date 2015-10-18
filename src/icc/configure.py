@@ -1,6 +1,6 @@
 import os
 
-ROOT=os.getcwd()
+ROOT=os.getcwd()+"/../.."
 DATADIR=ROOT+"/data"
 
 CONFIG={

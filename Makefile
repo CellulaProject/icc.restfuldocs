@@ -24,4 +24,4 @@ edit:
 	cd src && emacs app.py
 
 doc-storage-dev:
-	make -C ../kyoto-doc-storage dev
+	make -C ../icc.contentstorage dev

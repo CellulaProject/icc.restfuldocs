@@ -15,6 +15,6 @@ setup(
         'zope.component [zcml]',
         'icc.contentstorage',
         'pudb',  # for debugging
-    ]
+    ],
 )
 quit()

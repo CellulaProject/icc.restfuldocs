@@ -8,13 +8,14 @@ from configure import CONFIG
 from zope.configuration.xmlconfig import xmlconfig
 from pkg_resources import resource_stream, resource_string
 from icc.restfuldocs.interfaces import IConfiguration
+from icc.contentstorage.interfaces import IDocumentStorage
 from zope.interface import implementer
-from zope.component import getGlobalSiteManager
+from zope.component import getGlobalSiteManager, getUtility
 
 package=__name__
 
 
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort, make_response, request
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 from flask.ext.httpauth import HTTPBasicAuth
 
@@ -45,8 +46,8 @@ auth = HTTPBasicAuth()
 
 @auth.get_password
 def get_password(username):
-    if username == 'miguel':
-        return 'python'
+    if username == 'user':
+        return 'pass'
     return None
 
 
@@ -56,93 +57,51 @@ def unauthorized():
     # auth dialog
     return make_response(jsonify({'message': 'Unauthorized access'}), 401)
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web',
-        'done': False
-    }
-]
-
-task_fields = {
-    'title': fields.String,
-    'description': fields.String,
-    'done': fields.Boolean,
-    'uri': fields.Url('task')
-}
-
-
 class TaskListAPI(Resource):
     decorators = [auth.login_required]
 
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('title', type=str, required=True,
-                                   help='No task title provided',
-                                   location='json')
-        self.reqparse.add_argument('description', type=str, default="",
-                                   location='json')
+        self.storage=getUtility(IDocumentStorage, "documents")
         super(TaskListAPI, self).__init__()
 
-    def get(self):
-        return {'tasks': [marshal(task, task_fields) for task in tasks]}
-
     def post(self):
-        args = self.reqparse.parse_args()
-        task = {
-            'id': tasks[-1]['id'] + 1,
-            'title': args['title'],
-            'description': args['description'],
-            'done': False
-        }
-        tasks.append(task)
-        return {'task': marshal(task, task_fields)}, 201
+        """Append new document to the storage"""
 
+        data=request.get_data()
+        sha_id=self.storage.put(data)
+        return {'id': sha_id}, 201
 
 class TaskAPI(Resource):
     decorators = [auth.login_required]
 
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('title', type=str, location='json')
-        self.reqparse.add_argument('description', type=str, location='json')
-        self.reqparse.add_argument('done', type=bool, location='json')
+        self.storage=getUtility(IDocumentStorage, "documents")
         super(TaskAPI, self).__init__()
 
-    def get(self, id):
-        task = [task for task in tasks if task['id'] == id]
-        if len(task) == 0:
+    def get(self, sha_id):
+        if len(sha_id) != 64:
             abort(404)
-        return {'task': marshal(task[0], task_fields)}
+        try:
+            data=self.storage.get(sha_id)
+        except KeyError as e:
+            return {'id': sha_id, 'exception':'KeyError', 'value': str(e)}
+        print (repr(data))
+        response=make_response(data)
+        response.headers['Content-Type'] = 'Content-Type:application/octet-stream'
+        return response
 
-    def put(self, id):
-        task = [task for task in tasks if task['id'] == id]
-        if len(task) == 0:
+    def delete(self, sha_id):
+        if len(sha_id) != 64:
             abort(404)
-        task = task[0]
-        args = self.reqparse.parse_args()
-        for k, v in args.items():
-            if v is not None:
-                task[k] = v
-        return {'task': marshal(task, task_fields)}
-
-    def delete(self, id):
-        task = [task for task in tasks if task['id'] == id]
-        if len(task) == 0:
-            abort(404)
-        tasks.remove(task[0])
-        return {'result': True}
+        try:
+            key=self.storage.remove(sha_id)
+        except KeyError as e:
+            return {'id': sha_id, 'exception':'KeyError', 'value': str(e)}
+        return {'id': key, 'deleted':True}
 
 
-api.add_resource(TaskListAPI, '/todo/api/v1.0/tasks', endpoint='tasks')
-api.add_resource(TaskAPI, '/todo/api/v1.0/tasks/<int:id>', endpoint='task')
+api.add_resource(TaskListAPI, '/content/', endpoint='tasks')
+api.add_resource(TaskAPI, '/content/<sha_id>', endpoint='task')
 
 @app.route('/')
 def get_tasks():

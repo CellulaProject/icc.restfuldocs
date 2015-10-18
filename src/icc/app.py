@@ -3,14 +3,35 @@
 """Alternative version of the ToDo RESTful server implemented using the
 Flask-RESTful extension."""
 
+from configure import CONFIG
+from zope.configuration.xmlconfig import xmlconfig
+from pkg_resources import resource_stream, resource_string
+from icc.restfuldocs.interfaces import IApplication
+from zope.component import getGlobalSiteManager
+
+package=__name__
+
 from flask import Flask, jsonify, abort, make_response
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 from flask.ext.httpauth import HTTPBasicAuth
 
-app = Flask(__name__, static_url_path="")
+#config_file=resource_stream(package, "application.ini")
+# xmlconfig(resource_stream(package, "configure.zcml"))
+
+
+GSM=getGlobalSiteManager()
+
+app = Flask(package, static_url_path="")
+GSM.registerUtility(app, IApplication, name='application')
+app.CONFIG=CONFIG
+app.CONFIG['GSM']=GSM
+#app.name=package
+#app.info="Main application global registry."
+
+xmlconfig(resource_stream(package, "configure.zcml"))
+
 api = Api(app)
 auth = HTTPBasicAuth()
-
 
 @auth.get_password
 def get_password(username):
@@ -116,8 +137,6 @@ api.add_resource(TaskAPI, '/todo/api/v1.0/tasks/<int:id>', endpoint='task')
 @app.route('/')
 def get_tasks():
     return 'Hello world'
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, host="::")

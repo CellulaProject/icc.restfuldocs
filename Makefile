@@ -1,19 +1,20 @@
-.PHONY: env dev install test edit
+.PHONY: env dev install test edit doc-storage-dev
 
 LPYTHON=python3
-PYTHON=$(PWD)/$(LPYTHON)/bin/$(LPYTHON)
+V=$(PWD)/../$(LPYTHON)
+PYTHON=$(V)/bin/$(LPYTHON)
 ROOT=$(PWD)
 
 test:	
 	ip a | grep 2001
 	ip a | grep 172.
-	. $(LPYTHON)/bin/activate
-	cd src && $(PYTHON) app.py
+	. $(V)/bin/activate
+	cd src/icc && $(PYTHON) app.py
 
 env:
-	[ -d $(LPYTHON) ] || virtualenv  $(LPYTHON)
+	[ -d $(V) ] || virtualenv  $(V)
 
-dev:	env
+dev:	env doc-storage-dev
 	$(PYTHON) setup.py develop
 
 install: env
@@ -21,3 +22,6 @@ install: env
 	
 edit:	
 	cd src && emacs app.py
+
+doc-storage-dev:
+	make -C ../kyoto-doc-storage dev

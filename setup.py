@@ -14,6 +14,7 @@ setup(
         'flask-restful',
         'zope.component [zcml]',
         'icc.contentstorage',
+        'pudb',  # for debugging
     ]
 )
 quit()

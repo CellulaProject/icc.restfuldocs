@@ -9,12 +9,24 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'flask',
-        'flask-httpauth',
-        'flask-restful',
+	'pyramid==1.6a2',
+	'waitress==0.8.11dev0ipv6',
+	'cornice',
+        #'flask',
+        #'flask-httpauth',
+        #'flask-restful',
         'zope.component [zcml]',
         'icc.contentstorage',
         'pudb',  # for debugging
     ],
+
+    dependency_links = [
+	'https://github.com/Pylons/pyramid/archive/1.6a2.zip#egg=pyramid-1.6a2',
+        'https://github.com/eugeneai/waitress/archive/0.8.11dev0ipv6.zip#egg=waitress-0.8.11dev0ipv6',
+	],
+    entry_points="""\
+    [paste.app_factory]
+    main = icc.app:application
+    """,
 )
 quit()

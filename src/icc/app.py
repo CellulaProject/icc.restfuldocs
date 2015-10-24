@@ -8,6 +8,7 @@ from zope.component import getGlobalSiteManager, getUtility
 from pyramid.config import Configurator
 from waitress import serve
 import icc.restfuldocs.views as docs_view
+from pyramid.response import Response
 
 package=__name__
 
@@ -41,4 +42,4 @@ def application(global_config=None, **settings):
 if __name__=="__main__":
     app=application()
     serve(app, host='::', port=6543)
-
+    quit()

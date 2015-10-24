@@ -4,6 +4,7 @@ from zope.interface import implementer
 from zope.component import getGlobalSiteManager, getUtility
 from cornice.resource import add_resource, add_view
 from pyramid.response import Response
+import cornice
 
 
 def storage(name='documents'):
@@ -43,14 +44,19 @@ class Documents(object):
         """
         self.request=request
 
-    def post_doc():
+    def collection_post(self):
         """Append new document to the storage"""
 
-        data=request.get_data()
+        data=self.request.body
+        print (type(data),self.request.content_length)
         sha_id=storage().put(data)
-        return {'id': sha_id}, 201
+        return {'id': sha_id}
 
-    def get(sha_id):
+    def collection_get(self):
+        return {'text':'Hello world!'}
+
+    def get(self):
+        sha_id=self.request.matchdict['id']
         if len(sha_id) != 64:
             abort(404)
         try:
@@ -64,6 +70,7 @@ class Documents(object):
         return response
 
     def delete(self, sha_id):
+        sha_id=self.request.matchdict['id']
         if len(sha_id) != 64:
             abort(404)
         try:
@@ -72,14 +79,15 @@ class Documents(object):
             return {'id': sha_id, 'exception':'KeyError', 'value': str(e)}
         return {'id': key, 'deleted':True}
 
-add_view(Documents.post_doc, renderer='json')
-add_view(Documents.get, renderer='json')
-add_view(Documents.delete, renderer='json')
+#add_view(Documents.collection_post, renderer='json', status=201)
+#add_view(Documents.get, renderer='json')
+#add_view(Documents.delete, renderer='json')
 
 document_resource = add_resource(
     Documents,
-    path='/content/{sha_id}'
+    path='/content/{id}',
+    collection_path='/content',
 ) #, description="Document API")
 
 def includeme(config):
-    config.add_resource(document_resource)
+    config.add_cornice_resource(document_resource)

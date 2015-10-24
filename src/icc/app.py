@@ -10,6 +10,8 @@ from waitress import serve
 import icc.restfuldocs.views as docs_view
 from pyramid.response import Response
 
+import cornice
+
 package=__name__
 
 @implementer(IConfiguration)
@@ -31,7 +33,9 @@ def hello_world(request):
     return Response('<body><h1>Hello World!</h1></body>')
 
 def application(global_config=None, **settings):
+
     config=Configurator(settings=settings)
+    config.include(cornice)
     config.add_route('hello', '/')
     config.add_view(hello_world, route_name='hello')
     config.include(docs_view)

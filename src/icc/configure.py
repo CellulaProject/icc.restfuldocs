@@ -1,6 +1,6 @@
 import os
 
-ROOT=os.getcwd()+"/../.."
+ROOT="/root/icc.restfuldocs"
 DATADIR=ROOT+"/data"
 
 CONFIG={

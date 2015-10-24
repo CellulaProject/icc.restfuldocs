@@ -1,5 +1,5 @@
 
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure xmlns="http://pylonshq.com/pyramid">
   <utility 
     component="icc.restfuldocs.utilities.storage"
     name="documents"

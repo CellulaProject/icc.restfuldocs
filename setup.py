@@ -17,7 +17,8 @@ setup(
         #'flask-restful',
         'zope.component [zcml]',
         'icc.contentstorage',
-        'pudb',  # for debugging
+        # 'pudb',  # for debugging
+        'pyramid_zcml',
     ],
 
     dependency_links = [

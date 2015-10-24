@@ -26,7 +26,7 @@ GSM.registerUtility(conf, IConfiguration, name='application')
 conf.CONFIG=CONFIG
 conf.CONFIG['GSM']=GSM
 
-xmlconfig(resource_stream(package, "configure.zcml"))
+#xmlconfig(resource_stream(package, "configure.zcml"))
 
 def hello_world(request):
     print('Incoming request')
@@ -36,6 +36,7 @@ def application(global_config=None, **settings):
 
     config=Configurator(settings=settings)
     config.include(cornice)
+    config.load_zcml("configure.zcml")
     config.add_route('hello', '/')
     config.add_view(hello_world, route_name='hello')
     config.include(docs_view)

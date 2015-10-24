@@ -6,7 +6,7 @@ from zope.interface import implementer
 from zope.component import getGlobalSiteManager, getUtility
 
 from pyramid.config import Configurator
-from wsgiref.simple_server import make_server
+from waitress import serve
 import icc.restfuldocs.views as docs_view
 
 package=__name__
@@ -40,5 +40,5 @@ def application(global_config=None, **settings):
 
 if __name__=="__main__":
     app=application()
-    server = make_server('0.0.0.0', 6543, app)
-    server.serve_forever()
+    serve(app, host='::', port=6543)
+

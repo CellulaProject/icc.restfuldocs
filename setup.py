@@ -10,7 +10,7 @@ setup(
     zip_safe=False,
     install_requires=[
 	'pyramid==1.6a2',
-	'waitress==0.8.11dev0ipv6',
+	'waitress==0.8.11dev0ipv6-1',
 	'cornice',
         #'flask',
         #'flask-httpauth',
@@ -21,8 +21,8 @@ setup(
     ],
 
     dependency_links = [
-	'https://github.com/Pylons/pyramid/archive/1.6a2.zip#egg=pyramid-1.6a2',
-        'https://github.com/eugeneai/waitress/archive/0.8.11dev0ipv6.zip#egg=waitress-0.8.11dev0ipv6',
+        'https://github.com/Pylons/pyramid/archive/1.6a2.zip#egg=pyramid-1.6a2',
+        'https://github.com/eugeneai/waitress/archive/0.8.11dev0ipv6-1.zip#egg=waitress-0.8.11dev0ipv6-1',
 	],
     entry_points="""\
     [paste.app_factory]

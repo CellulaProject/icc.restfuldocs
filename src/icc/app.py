@@ -9,6 +9,7 @@ from pyramid.config import Configurator
 from waitress import serve
 import icc.restfuldocs.views as docs_view
 from pyramid.response import Response
+import pyramid_zcml
 
 import cornice
 
@@ -36,7 +37,7 @@ def application(global_config=None, **settings):
 
     config=Configurator(settings=settings)
     config.include(cornice)
-    config.load_zcml("configure.zcml")
+    config.load_zcml('icc.restfuldocs')
     config.add_route('hello', '/')
     config.add_view(hello_world, route_name='hello')
     config.include(docs_view)

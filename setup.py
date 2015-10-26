@@ -16,14 +16,15 @@ setup(
         #'flask-httpauth',
         #'flask-restful',
         'zope.component [zcml]',
-        'icc.contentstorage',
+        'icc.contentstorage==0.0.1',
         'pudb',  # for debugging
     ],
 
     dependency_links = [
         'https://github.com/Pylons/pyramid/archive/1.6a2.zip#egg=pyramid-1.6a2',
         'https://github.com/eugeneai/waitress/archive/0.8.11dev0ipv6-1.zip#egg=waitress-0.8.11dev0ipv6-1',
-        'https://github.com/mozilla-services/cornice/archive/master.zip#egg=cornice-1.2.0.dev0'
+        'https://github.com/mozilla-services/cornice/archive/master.zip#egg=cornice-1.2.0.dev0',
+	'https://github.com/eugeneai/icc.contentstorage/archive/master.zip#egg=icc.contentstorage-0.0.1',	
 	],
     entry_points="""\
     [paste.app_factory]

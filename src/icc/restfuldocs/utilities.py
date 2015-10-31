@@ -8,6 +8,6 @@ app=getUtility(IConfiguration, 'application')
 
 CONFIG=app.CONFIG
 
-storage=KiotoCabinetDocStorage(CONFIG['CONTENT_STORAGE_FILENAME'])
+storage=KyotoCabinetDocStorage(CONFIG['CONTENT_STORAGE_FILENAME'])
 #storage=KiotoTycoonDocStorage()
 #storage=DictionaryDocStorage()

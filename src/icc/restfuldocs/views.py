@@ -1,5 +1,5 @@
 from icc.restfuldocs.interfaces import IConfiguration
-from icc.contentstorage.interfaces import IDocumentStorage
+#from icc.contentstorage.interfaces import IConfiguration
 from zope.interface import implementer
 from zope.component import getGlobalSiteManager, getUtility
 from cornice.resource import add_resource, add_view
@@ -11,7 +11,7 @@ def storage(name='documents'):
     """Returns thw pointer to the document storage
     backend component.
     """
-    return getUtility(IDocumentStorage, name)
+    return getUtility(IConfiguration, name)
 
 def app(name='application'):
     """Return current application.

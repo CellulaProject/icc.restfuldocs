@@ -9,6 +9,8 @@ from pyramid.config import Configurator
 from waitress import serve
 import icc.restfuldocs.views as docs_view
 from pyramid.response import Response
+import logging
+logger=logging.getLogger('icc.cellula')
 
 import cornice
 

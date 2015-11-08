@@ -5,7 +5,8 @@ from zope.component import getGlobalSiteManager, getUtility
 from cornice.resource import add_resource, add_view
 from pyramid.response import Response
 import cornice
-
+import logging
+logger=logging.getLogger('icc.cellula')
 
 def storage(name='documents'):
     """Returns thw pointer to the document storage
@@ -48,7 +49,7 @@ class Documents(object):
         """Append new document to the storage"""
 
         data=self.request.body
-        print (type(data),self.request.content_length)
+        logger.debug ("POST: " + str(type(data)) + " " + str(self.request.content_length))
         sha_id=storage().put(data)
         return {'id': sha_id}
 

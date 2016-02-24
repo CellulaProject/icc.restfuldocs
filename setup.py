@@ -11,7 +11,7 @@ setup(
     install_requires=[
 	'pyramid',
 	'waitress==0.8.11dev0ipv6-1',
-	'cornice==1.2.0.dev0',
+	'cornice',
         #'flask',
         #'flask-httpauth',
         #'flask-restful',

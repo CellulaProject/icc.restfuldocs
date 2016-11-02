@@ -10,7 +10,7 @@ setup(
     zip_safe=False,
     install_requires=[
 	'pyramid',
-	'waitress==0.8.11dev0ipv6-1',
+	'waitress',
 	'cornice',
         'zope.component [zcml]',
         'icc.contentstorage==0.0.1',
@@ -18,7 +18,6 @@ setup(
     ],
 
     dependency_links = [
-        'https://github.com/eugeneai/waitress/archive/0.8.11dev0ipv6-1.zip#egg=waitress-0.8.11dev0ipv6-1',
 	'https://github.com/eugeneai/icc.contentstorage/archive/master.zip#egg=icc.contentstorage-0.0.1',	
 	],
     entry_points="""\
